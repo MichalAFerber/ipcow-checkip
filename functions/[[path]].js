@@ -25,27 +25,33 @@ export async function onRequest(context) {
         });
     }
 
-    // /all endpoint - For browser, returns both IPs if available
+    // /v4 endpoint - Returns only IPv4
+    if (pathname === '/v4') {
+        return new Response(ipv4, {
+            status: 200,
+            headers: {
+                'Content-Type': 'text/plain',
+                'Cache-Control': 'no-store',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+    }
+
+    // /v6 endpoint - Returns only IPv6
+    if (pathname === '/v6') {
+        return new Response(ipv6, {
+            status: 200,
+            headers: {
+                'Content-Type': 'text/plain',
+                'Cache-Control': 'no-store',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+    }
+
+    // /all endpoint - Returns both as JSON (best effort with current headers)
     if (pathname === '/all') {
-        // Best effort to get both IPs
-        let finalIpv4 = ipv4;
-        let finalIpv6 = ipv6;
-
-        // If one is missing but we know the client supports both (based on your setup),
-        // we can assume the other might be in the headers or infer it
-        const allIps = [
-            ...ipList,
-            ...(context.request.headers.get('X-Forwarded-For')?.split(',') || [])
-        ].map(ip => ip.trim());
-
-        if (finalIpv4 === 'No IPv4 detected') {
-            finalIpv4 = allIps.find(ip => /^\d+\.\d+\.\d+\.\d+$/.test(ip)) || 'No IPv4 detected';
-        }
-        if (finalIpv6 === 'No IPv6 detected') {
-            finalIpv6 = allIps.find(ip => /:/.test(ip) && !/^\d+\.\d+\.\d+\.\d+$/.test(ip)) || 'No IPv6 detected';
-        }
-
-        return new Response(JSON.stringify({ ipv4: finalIpv4, ipv6: finalIpv6 }), {
+        return new Response(JSON.stringify({ ipv4, ipv6 }), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
