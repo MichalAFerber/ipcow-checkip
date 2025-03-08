@@ -21,17 +21,17 @@
     <p><code>curl -4 https://checkip.ipcow.com/</code> (IPv4 only)</p>
     <p><code>curl -6 https://checkip.ipcow.com/</code> (IPv6 only)</p>
     <script>
-        // Fetch IPv4
-        fetch('/v4', { cache: 'no-store' })
+        // Fetch IPv4 from an IPv4-only service
+        fetch('https://api.ipify.org', { cache: 'no-store' })
             .then(response => response.text())
             .then(ip => document.getElementById('ipv4').textContent = ip)
-            .catch(() => document.getElementById('ipv4').textContent = 'Error fetching IPv4');
+            .catch(() => document.getElementById('ipv4').textContent = 'No IPv4 detected');
 
-        // Fetch IPv6
-        fetch('/v6', { cache: 'no-store' })
+        // Fetch IPv6 from an IPv6-only service
+        fetch('https://api6.ipify.org', { cache: 'no-store' })
             .then(response => response.text())
             .then(ip => document.getElementById('ipv6').textContent = ip)
-            .catch(() => document.getElementById('ipv6').textContent = 'Error fetching IPv6');
+            .catch(() => document.getElementById('ipv6').textContent = 'No IPv6 detected');
     </script>
 </body>
 </html>

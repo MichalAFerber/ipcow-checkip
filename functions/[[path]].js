@@ -18,49 +18,17 @@ export async function onRequest(context) {
         const ipToReturn = isIPv6 ? ipv6 : ipv4;
         return new Response(ipToReturn, {
             status: 200,
-            headers: {
-                'Content-Type': 'text/plain',
-                'Cache-Control': 'no-store'
-            }
+            headers: { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' }
         });
     }
 
-    // /v4 endpoint - Returns only IPv4
-    if (pathname === '/v4') {
-        return new Response(ipv4, {
-            status: 200,
-            headers: {
-                'Content-Type': 'text/plain',
-                'Cache-Control': 'no-store',
-                'Access-Control-Allow-Origin': '*'
-            }
-        });
-    }
-
-    // /v6 endpoint - Returns only IPv6
-    if (pathname === '/v6') {
-        return new Response(ipv6, {
-            status: 200,
-            headers: {
-                'Content-Type': 'text/plain',
-                'Cache-Control': 'no-store',
-                'Access-Control-Allow-Origin': '*'
-            }
-        });
-    }
-
-    // /all endpoint - Returns both as JSON (best effort with current headers)
+    // /all endpoint - Returns both as JSON (best effort with headers)
     if (pathname === '/all') {
         return new Response(JSON.stringify({ ipv4, ipv6 }), {
             status: 200,
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-store',
-                'Access-Control-Allow-Origin': '*'
-            }
+            headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': '*' }
         });
     }
 
-    // For other paths, let it fall through to static assets
     return context.next();
 }
