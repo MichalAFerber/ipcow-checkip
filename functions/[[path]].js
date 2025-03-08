@@ -13,8 +13,32 @@ export async function onRequest(context) {
     
     const { pathname } = new URL(context.request.url);
 
-    // /ip path - For curl, returns based on connection protocol
-    if (pathname === '/ip') {
+    // Root path (/)
+    if (pathname === '/' || pathname === '') {
+        // Check User-Agent to distinguish curl from browser
+        const userAgent = context.request.headers.get('User-Agent') || '';
+        const isCurl = userAgent.toLowerCase().includes('curl');
+
+        if (isCurl) {
+            // For curl, check if protocol is forced via -4 or -6 (best effort via IP)
+            const ipToReturn = isIPv6 ? ipv6 : ipv4;
+
+            // If no protocol forced (plain curl), return JSON with both
+            if (!context.request.cf?.clientTcpRtt) { // Rough heuristic for no -4/-6
+                return new Response(JSON.stringify({ ipv4, ipv6 }), {
+                    status: 200,
+                    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
+                });
+            }
+
+            // For curl -4 or -6, return plain text
+            return new Response(ipToReturn, {
+                status: 200,
+                headers: { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' }
+            });
+        }
+
+        // For browser, return default IP as plain text
         const ipToReturn = isIPv6 ? ipv6 : ipv4;
         return new Response(ipToReturn, {
             status: 200,
@@ -22,14 +46,5 @@ export async function onRequest(context) {
         });
     }
 
-    // /all endpoint - Returns both as JSON
-    if (pathname === '/all') {
-        return new Response(JSON.stringify({ ipv4, ipv6 }), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': '*' }
-        });
-    }
-
-    // Pass through to static assets (like index.html) for other requests, including /
     return context.next();
 }
