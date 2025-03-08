@@ -1,0 +1,5 @@
+<script>
+    fetch('/ip')
+        .then(response => response.text())
+        .then(ip => document.getElementById('ip').textContent = ip);
+</script>
