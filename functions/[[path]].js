@@ -7,14 +7,14 @@ export async function onRequest(context) {
     const ipv4 = ipList.map(ip => ip.trim()).find(ip => /^\d+\.\d+\.\d+\.\d+$/.test(ip)) || 'No IPv4 detected';
     const ipv6 = ipList.map(ip => ip.trim()).find(ip => /:/.test(ip) && !/^\d+\.\d+\.\d+\.\d+$/.test(ip)) || 'No IPv6 detected';
 
-    // Determine connection protocol for root path
+    // Determine connection protocol
     const firstIp = ipList[0].trim();
     const isIPv6 = /:/.test(firstIp) && !/^\d+\.\d+\.\d+\.\d+$/.test(firstIp);
     
     const { pathname } = new URL(context.request.url);
 
-    // Root path (/) - For curl, returns based on connection protocol
-    if (pathname === '/' || pathname === '') {
+    // Explicit root path (/) - For curl
+    if (pathname === '/') {
         const ipToReturn = isIPv6 ? ipv6 : ipv4;
         return new Response(ipToReturn, {
             status: 200,
@@ -22,7 +22,7 @@ export async function onRequest(context) {
         });
     }
 
-    // /all endpoint - Returns both as JSON (best effort with headers)
+    // /all endpoint - Returns both as JSON
     if (pathname === '/all') {
         return new Response(JSON.stringify({ ipv4, ipv6 }), {
             status: 200,
@@ -30,5 +30,6 @@ export async function onRequest(context) {
         });
     }
 
+    // Pass through to static assets (like index.html) for other requests
     return context.next();
 }
