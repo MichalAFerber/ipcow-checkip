@@ -7,14 +7,13 @@ export async function onRequest(context) {
     const ipv4 = ipList.map(ip => ip.trim()).find(ip => /^\d+\.\d+\.\d+\.\d+$/.test(ip)) || 'No IPv4 detected';
     const ipv6 = ipList.map(ip => ip.trim()).find(ip => /:/.test(ip) && !/^\d+\.\d+\.\d+\.\d+$/.test(ip)) || 'No IPv6 detected';
 
-    // Determine if the connection is IPv4 or IPv6 based on the first IP in CF-Connecting-IP
+    // Determine if the connection is IPv4 or IPv6 based on the first IP
     const firstIp = ipList[0].trim();
     const isIPv6 = /:/.test(firstIp) && !/^\d+\.\d+\.\d+\.\d+$/.test(firstIp);
     
-    // Get the pathname from the request
     const { pathname } = new URL(context.request.url);
 
-    // If root path (/), return plain text based on connection protocol
+    // Root path (/) - For curl, returns based on connection protocol
     if (pathname === '/' || pathname === '') {
         const ipToReturn = isIPv6 ? ipv6 : ipv4;
         return new Response(ipToReturn, {
@@ -26,6 +25,18 @@ export async function onRequest(context) {
         });
     }
 
-    // For other paths, let it fall through to static assets
+    // New /all endpoint - For browser, returns both IPs in JSON
+    if (pathname === '/all') {
+        return new Response(JSON.stringify({ ipv4, ipv6 }), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store',
+                'Access-Control-Allow-Origin': '*' // For browser compatibility
+            }
+        });
+    }
+
+    // For other paths, let it fall through to static assets (like index.html)
     return context.next();
 }

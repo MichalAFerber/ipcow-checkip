@@ -6,19 +6,32 @@
     <title>checkip.ipcow.com</title>
     <style>
         body { font-family: monospace; text-align: center; padding: 50px; }
+        .ip-box { margin: 20px; }
     </style>
 </head>
 <body>
-    <h1>Your IP Address:</h1>
-    <pre id="ip">Loading...</pre>
+    <h1>Your IP Addresses:</h1>
+    <div class="ip-box">
+        <strong>IPv4:</strong> <pre id="ipv4">Loading...</pre>
+    </div>
+    <div class="ip-box">
+        <strong>IPv6:</strong> <pre id="ipv6">Loading...</pre>
+    </div>
     <p>For CLI usage:</p>
-    <p><code>curl -4 https://checkip.ipcow.com/</code> (IPv4)</p>
-    <p><code>curl -6 https://checkip.ipcow.com/</code> (IPv6)</p>
+    <p><code>curl -4 https://checkip.ipcow.com/</code> (IPv4 only)</p>
+    <p><code>curl -6 https://checkip.ipcow.com/</code> (IPv6 only)</p>
     <script>
-        fetch('/', { cache: 'no-store' })
-            .then(response => response.text())
-            .then(ip => document.getElementById('ip').textContent = ip)
-            .catch(error => document.getElementById('ip').textContent = 'Error fetching IP');
+        fetch('/all', { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ipv4').textContent = data.ipv4;
+                document.getElementById('ipv6').textContent = data.ipv6;
+            })
+            .catch(error => {
+                document.getElementById('ipv4').textContent = 'Error fetching IPv4';
+                document.getElementById('ipv6').textContent = 'Error fetching IPv6';
+            });
     </script>
 </body>
 </html>
+
