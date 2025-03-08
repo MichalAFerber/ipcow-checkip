@@ -24,14 +24,13 @@ A lightweight utility hosted on Cloudflare Pages that returns the user's public 
     Example output: `2606:4700:4700::1111` 
 
 ### Browser 
-    - Visit [https://checkip.ipcow.com/](https://checkip.ipcow.com/) 
-    - Displays your connecting IP (IPv4 or IPv6, depending on your browser’s protocol preference) as plain text. 
-
+- Visit [https://checkip.ipcow.com/](https://checkip.ipcow.com/) 
+- Displays your connecting IP (IPv4 or IPv6, depending on your browser’s protocol preference) as plain text. 
 
 ### How It Works 
-    - Built with Cloudflare Pages and a single Function (`functions/\[\[path]].js`).
-    - Uses the `CF-Connecting-IP` header to detect the client’s public IP.
-    - Returns plain text for simplicity and expanded use cases. 
+- Built with Cloudflare Pages and a single Function (`functions/\[\[path]].js`).
+- Uses the `CF-Connecting-IP` header to detect the client’s public IP.
+- Returns plain text for simplicity and expanded use cases. 
 
 ### Setup 
 1. Clone the Repository: 
@@ -40,13 +39,13 @@ A lightweight utility hosted on Cloudflare Pages that returns the user's public 
     cd IPCow-checkip
     ```     
 2. Deploy to Cloudflare Pages:
-    - Link the repository to Cloudflare Pages.
-    - Set the build output directory to / (no build command needed).
-    - Deploy! 
+- Link the repository to Cloudflare Pages.
+- Set the build output directory to / (no build command needed).
+- Deploy! 
 
 3. Custom Domain (optional):
-    - Add a CNAME record pointing to your Pages project (e.g., your-project.pages.dev).
-    - Configure in Cloudflare Pages settings.
+- Add a CNAME record pointing to your Pages project (e.g., your-project.pages.dev).
+- Configure in Cloudflare Pages settings.
 
 ### Notes  
 This service returns only the IP used for the connection (IPv4 or IPv6), not both simultaneously. For a dual-IP display, check out <https://ipcow.com/>.
