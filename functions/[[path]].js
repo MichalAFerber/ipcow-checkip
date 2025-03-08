@@ -13,8 +13,8 @@ export async function onRequest(context) {
     
     const { pathname } = new URL(context.request.url);
 
-    // Explicit root path (/) - For curl
-    if (pathname === '/') {
+    // /ip path - For curl, returns based on connection protocol
+    if (pathname === '/ip') {
         const ipToReturn = isIPv6 ? ipv6 : ipv4;
         return new Response(ipToReturn, {
             status: 200,
@@ -30,6 +30,6 @@ export async function onRequest(context) {
         });
     }
 
-    // Pass through to static assets (like index.html) for other requests
+    // Pass through to static assets (like index.html) for other requests, including /
     return context.next();
 }
