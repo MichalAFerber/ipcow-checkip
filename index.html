@@ -9,9 +9,9 @@
 <body>
     <h1>Your IPv4 Address:</h1>
     <pre id="ip">Loading...</pre>
-    <p>For CLI usage: <code>curl https://checkip.ipcow.com/ip</code></p>
+    <p>For CLI usage: <code>curl https://checkip.ipcow.com/</code></p>
     <script>
-        fetch('/ip', { cache: 'no-store' })
+        fetch('/', { cache: 'no-store' })
             .then(response => response.text())
             .then(ip => document.getElementById('ip').textContent = ip)
             .catch(error => document.getElementById('ip').textContent = 'Error fetching IPv4');
