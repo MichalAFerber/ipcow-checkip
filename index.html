@@ -1,20 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>IPv4 Checker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>checkip.ipcow.com IPv4</title>
     <style>
         body { font-family: monospace; text-align: center; padding: 50px; }
     </style>
 </head>
 <body>
-    <h1>Your IPv4 Address:</h1>
+    <h1>Your IP Address:</h1>
     <pre id="ip">Loading...</pre>
-    <p>For CLI usage: <code>curl https://checkip.ipcow.com/</code></p>
+    <p>For CLI usage:</p>
+    <p><code>curl -4 https://checkip.ipcow.com/</code> (IPv4)</p>
+    <p><code>curl -6 https://checkip.ipcow.com/</code> (IPv6)</p>
     <script>
         fetch('/', { cache: 'no-store' })
             .then(response => response.text())
             .then(ip => document.getElementById('ip').textContent = ip)
-            .catch(error => document.getElementById('ip').textContent = 'Error fetching IPv4');
+            .catch(error => document.getElementById('ip').textContent = 'Error fetching IP');
     </script>
 </body>
 </html>

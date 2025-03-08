@@ -5,13 +5,19 @@ export async function onRequest(context) {
     
     const ipList = clientIp.split(',');
     const ipv4 = ipList.map(ip => ip.trim()).find(ip => /^\d+\.\d+\.\d+\.\d+$/.test(ip)) || 'No IPv4 detected';
+    const ipv6 = ipList.map(ip => ip.trim()).find(ip => /:/.test(ip) && !/^\d+\.\d+\.\d+\.\d+$/.test(ip)) || 'No IPv6 detected';
+
+    // Determine if the connection is IPv4 or IPv6 based on the first IP in CF-Connecting-IP
+    const firstIp = ipList[0].trim();
+    const isIPv6 = /:/.test(firstIp) && !/^\d+\.\d+\.\d+\.\d+$/.test(firstIp);
     
     // Get the pathname from the request
     const { pathname } = new URL(context.request.url);
 
-    // If root path (/), return plain text
+    // If root path (/), return plain text based on connection protocol
     if (pathname === '/' || pathname === '') {
-        return new Response(ipv4, {
+        const ipToReturn = isIPv6 ? ipv6 : ipv4;
+        return new Response(ipToReturn, {
             status: 200,
             headers: {
                 'Content-Type': 'text/plain',
@@ -20,6 +26,6 @@ export async function onRequest(context) {
         });
     }
 
-    // For other paths (like /ip), let it fall through to static assets or handle differently if needed
+    // For other paths, let it fall through to static assets
     return context.next();
 }
