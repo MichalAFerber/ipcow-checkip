@@ -16,11 +16,11 @@ export async function onRequest(context) {
       const isIPv6Connection = /:/.test(firstIp) && !/^\d+\.\d+\.\d+\.\d+$/.test(firstIp);
   
       if (ipVersion === 'v6') {
-        ipToReturn = ipv6; // Force IPv6 or "No IPv6 detected"
+        ipToReturn = ipv6;
       } else if (ipVersion === 'v4') {
-        ipToReturn = ipv4; // Force IPv4 or "No IPv4 detected"
+        ipToReturn = ipv4;
       } else {
-        ipToReturn = isIPv6Connection ? ipv6 : ipv4; // Default to connection protocol (CLI behavior)
+        ipToReturn = isIPv6Connection ? ipv6 : ipv4;
       }
   
       return new Response(ipToReturn, {
