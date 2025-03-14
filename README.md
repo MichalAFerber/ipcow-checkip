@@ -1,4 +1,4 @@
-# IPCow CheckIP
+# IP Cow CheckIP
 
 A lightweight utility hosted on Cloudflare Pages that returns the user's public IP address as plain text. Perfect for CLI usage with `curl` or quick browser checks.
 
