@@ -23,7 +23,11 @@ export async function onRequest(context) {
   
       return new Response(ipToReturn, {
         status: 200,
-        headers: { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' }
+        headers: { 
+          'Content-Type': 'text/plain', 
+          'Cache-Control': 'no-store',
+          'Access-Control-Allow-Origin': '*'
+        }
       });
     }
   
