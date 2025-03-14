@@ -8,17 +8,19 @@ export async function onRequest(context) {
     const ipv6 = ipList.find(ip => /:/.test(ip) && !/^\d+\.\d+\.\d+\.\d+$/.test(ip)) || 'No IPv6 detected';
   
     const { searchParams, pathname } = new URL(context.request.url);
-    const forceIPv6 = searchParams.get('ip') === 'v6';
+    const ipVersion = searchParams.get('ip');
   
     if (pathname === '/' || pathname === '') {
       let ipToReturn;
       const firstIp = ipList[0];
       const isIPv6Connection = /:/.test(firstIp) && !/^\d+\.\d+\.\d+\.\d+$/.test(firstIp);
   
-      if (forceIPv6) {
-        ipToReturn = ipv6;
+      if (ipVersion === 'v6') {
+        ipToReturn = ipv6; // Force IPv6 or "No IPv6 detected"
+      } else if (ipVersion === 'v4') {
+        ipToReturn = ipv4; // Force IPv4 or "No IPv4 detected"
       } else {
-        ipToReturn = isIPv6Connection ? ipv6 : ipv4;
+        ipToReturn = isIPv6Connection ? ipv6 : ipv4; // Default to connection protocol (CLI behavior)
       }
   
       return new Response(ipToReturn, {
