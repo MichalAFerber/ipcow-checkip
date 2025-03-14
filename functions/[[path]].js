@@ -16,10 +16,8 @@ export async function onRequest(context) {
       const isIPv6Connection = /:/.test(firstIp) && !/^\d+\.\d+\.\d+\.\d+$/.test(firstIp);
   
       if (forceIPv6) {
-        // For ?ip=v6, always return IPv6 or "No IPv6 detected"
         ipToReturn = ipv6;
       } else {
-        // For curl -4 or -6, or default browser behavior, return the connecting IP
         ipToReturn = isIPv6Connection ? ipv6 : ipv4;
       }
   
