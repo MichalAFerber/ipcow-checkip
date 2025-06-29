@@ -9,19 +9,19 @@ A lightweight utility hosted on Cloudflare Pages that returns the user's public 
     ```bash
     curl https://checkip.ipcow.com/
     ```
-    Example output: `192.168.1.100` 
+    Example output: `1.0.0.1` 
 
 - Force IPv4: 
     ```bash
     curl -4 https://checkip.ipcow.com/
     ```
-    Example output: `192.168.1.100`
+    Example output: `1.0.0.1`
 
 - Force IPv6: 
     ```bash
     curl -6 https://checkip.ipcow.com/
     ```
-    Example output: `2606:4700:4700::1111` 
+    Example output: `2606:4700:4700::1001` 
 
 ### Browser 
 - Visit [https://checkip.ipcow.com/](https://checkip.ipcow.com/) 
