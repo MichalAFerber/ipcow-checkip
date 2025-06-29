@@ -1,4 +1,4 @@
-# IP Cow CheckIP v4 & v6
+# IPv4 & IPv6 Address Checker
 
 A lightweight utility hosted on Cloudflare Pages that returns the user's public IP address as plain text. Perfect for CLI usage with `curl` or quick browser checks.
 
